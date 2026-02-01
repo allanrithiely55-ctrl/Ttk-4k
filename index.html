@@ -124,4 +124,43 @@
 </script>
 
 </body>
-</html>
+</html <script>
+  async function pagar() {
+    const payerName = prompt("Digite seu nome completo:");
+    const payerDocument = prompt("Digite seu CPF (somente números):");
+
+    if (!payerName || !payerDocument) {
+      alert("Nome e CPF são obrigatórios.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/.netlify/functions/create-payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          amount: 19.90,
+          description: "Acesso GreenGate 4K",
+          payerName,
+          payerDocument
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.payment_url) {
+        window.location.href = data.payment_url;
+      } else {
+        alert("Erro ao gerar pagamento");
+        console.error(data);
+      }
+
+    } catch (err) {
+      alert("Erro de conexão com pagamento");
+      console.error(err);
+    }
+  }
+</html
+
